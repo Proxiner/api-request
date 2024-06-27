@@ -1,63 +1,65 @@
-import React, { useEffect, useRef, useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import "./Users.css";
+import { useRef } from "react";
 
 function Users() {
-  const [usersList, setUsersList] = useState([]);
-  const [searched, setSearched] = useState(false);
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const inputTag = useRef();
+  const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const input = useRef();
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
-      .then((output) => setUsersList(output));
+      .then((output) => setUsers(output));
   }, []);
 
-  const fetchUser = () => {
-    setSearched(true);
-    const searchQuery = inputTag.current.value.toLowerCase();
-
-    if (searchQuery === "") {
-      setSearched(false);
-      setFilteredUsers([]);
-      return;
-    }
-
-    const matchedUsers = usersList.filter((user) =>
-      user.name.toLowerCase().includes(searchQuery)
-    );
-
-    setFilteredUsers(matchedUsers);
+  const searchUser = () => {
+    setSearchQuery(input.current.value.trim());
   };
 
   return (
-    <div className="container">
-      <input
-        type="text"
-        ref={inputTag}
-        onInput={fetchUser}
-        placeholder="Search:"
-      />
-      <div className="row">
-        {!searched
-          ? usersList.map((user) => (
-              <ul key={user.id}>
-                <li>Name: {user.name}</li>
-                <li>Email: {user.email}</li>
-                <li>Phone: {user.phone}</li>
-                <li>Website: {user.website}</li>
-              </ul>
-            ))
-          : filteredUsers.map((user) => (
-              <ul key={user.id}>
-                <li>Name: {user.name}</li>
-                <li>Email: {user.email}</li>
-                <li>Phone: {user.phone}</li>
-                <li>Website: {user.website}</li>
-              </ul>
-            ))}
+    <div className="users-container">
+      <div className="search-row">
+        <input
+          ref={input}
+          onInput={searchUser}
+          type="text"
+          placeholder="Username?"
+        />
+        <button> Search </button>
       </div>
+      <table className="users-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>phone</th>
+            <th>Company</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((userData) => (
+            <tr
+              className={
+                searchQuery &&
+                userData.username
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase())
+                  ? "colored"
+                  : ""
+              }
+              key={userData.id}
+            >
+              <td>{userData.username}</td>
+              <td>{userData.name}</td>
+              <td>{userData.email}</td>
+              <td>{userData.phone}</td>
+              <td>{userData.company.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
