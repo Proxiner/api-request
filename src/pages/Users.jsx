@@ -34,7 +34,7 @@ function Users() {
             <th>Username</th>
             <th>Name</th>
             <th>Email</th>
-            <th>phone</th>
+            <th>Phone</th>
             <th>Company</th>
           </tr>
         </thead>
