@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
+
 import "./Users.css";
-import { useRef } from "react";
 
 function Users() {
   const [users, setUsers] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [filterUser, setFilterUser] = useState([]);
+  const [searched, setSearched] = useState(false);
+
   const input = useRef();
 
   useEffect(() => {
@@ -14,50 +16,65 @@ function Users() {
   }, []);
 
   const searchUser = () => {
-    setSearchQuery(input.current.value.trim());
+    setSearched(true);
+
+    const searchQuery = input.current.value.toLowerCase();
+
+    if (searchQuery === "") {
+      setSearched(false);
+      setFilterUser([]);
+      return;
+    }
+
+    const mathcedUsers = users.filter((userData) =>
+      userData.email.toLowerCase().includes(searchQuery)
+    );
+
+    setFilterUser(mathcedUsers);
   };
 
   return (
     <div className="users-container">
       <div className="search-row">
         <input
+          type="text"
           ref={input}
           onInput={searchUser}
-          type="text"
           placeholder="Username?"
         />
         <button> Search </button>
       </div>
+
       <table className="users-table">
         <thead>
           <tr>
-            <th>Username</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Company</th>
+            <th> Username </th>
+            <th> Name </th>
+            <th> Email </th>
+            <th> Phone </th>
+            <th> Company </th>
           </tr>
         </thead>
         <tbody>
-          {users.map((userData) => (
-            <tr
-              className={
-                searchQuery &&
-                userData.username
-                  .toLowerCase()
-                  .includes(searchQuery.toLowerCase())
-                  ? "colored"
-                  : ""
-              }
-              key={userData.id}
-            >
-              <td>{userData.username}</td>
-              <td>{userData.name}</td>
-              <td>{userData.email}</td>
-              <td>{userData.phone}</td>
-              <td>{userData.company.name}</td>
-            </tr>
-          ))}
+          {searched
+            ? filterUser.map((userData) => (
+                <tr key={userData.id}>
+                  <td>{userData.username}</td>
+                  <td>{userData.name}</td>
+                  <td>{userData.email}</td>
+                  <td>{userData.phone}</td>
+                  <td>{userData.company.name}</td>
+                </tr>
+              ))
+            : users.map((userData) => (
+                <tr key={userData.id}>
+                  <td>{userData.username}</td>
+                  <td>{userData.name}</td>
+                  <td>{userData.email}</td>
+                  <td>{userData.phone}</td>
+                  <td>{userData.company.name}</td>
+                </tr>
+              ))}
         </tbody>
       </table>
     </div>
