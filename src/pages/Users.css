@@ -35,8 +35,13 @@
   background-color: #39343a;
 }
 
-.colored td {
-  background-color: #4f4051;
+/* .searched td {
+  background-color: #752081;
+  transition: all linear 0.3s;
+} */
+
+.selected{
+    background-color: #752081;
   transition: all linear 0.3s;
 }
 

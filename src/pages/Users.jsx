@@ -98,12 +98,42 @@ function Users() {
         <tbody>
           {searched
             ? filterUser.map((userData) => (
-                <tr key={userData.id}>
-                  <td>{userData.username}</td>
-                  <td>{userData.name}</td>
-                  <td>{userData.email}</td>
-                  <td>{userData.phone}</td>
-                  <td>{userData.company.name}</td>
+                <tr className="searched" key={userData.id}>
+                  <td
+                    className={
+                      dropdown.current.value === "username" ? "selected" : ""
+                    }
+                  >
+                    {userData.username}
+                  </td>
+                  <td
+                    className={
+                      dropdown.current.value === "name" ? "selected" : ""
+                    }
+                  >
+                    {userData.name}
+                  </td>
+                  <td
+                    className={
+                      dropdown.current.value === "email" ? "selected" : ""
+                    }
+                  >
+                    {userData.email}
+                  </td>
+                  <td
+                    className={
+                      dropdown.current.value === "phone" ? "selected" : ""
+                    }
+                  >
+                    {userData.phone}
+                  </td>
+                  <td
+                    className={
+                      dropdown.current.value === "company" ? "selected" : ""
+                    }
+                  >
+                    {userData.company.name}
+                  </td>
                 </tr>
               ))
             : users.map((userData) => (
