@@ -7,7 +7,6 @@ import { FiMinus } from "react-icons/fi";
 function Products() {
   const [products, setProducts] = useState([]);
   const [sorted, setSorted] = useState(false);
-  const [cartCounter, setCartCounter] = useState(0);
 
   useEffect(() => {
     fetch("https://api.escuelajs.co/api/v1/products?offset=3&limit=12")
@@ -32,7 +31,7 @@ function Products() {
                 <img src={srtProduct.images[0]} alt="" />
                 <h2>
                   {srtProduct.title.slice(0, 20)}
-                  <h3> {srtProduct.description.slice(0, 125)} </h3>
+                  <p> {srtProduct.description.slice(0, 125)} </p>
                 </h2>
                 <span> {srtProduct.price}$ </span>
               </div>
@@ -44,14 +43,9 @@ function Products() {
                 <img src={product.images[0]} alt="" />
                 <h2>
                   {product.title.slice(0, 20)}
-                  <h3> {product.description.slice(0, 125)} </h3>
+                  <p> {product.description.slice(0, 125)} </p>
                 </h2>
                 <span> {product.price}$ </span>
-              </div>
-              <div className="add-to-cart">
-                <button onClick={ () => setCartCounter(cartCounter => cartCounter - 1)}> <FiMinus /> </button>
-                <h5> {cartCounter} </h5>
-                <button onClick={ () => setCartCounter(cartCounter => cartCounter + 1)}> <MdOutlineAdd /> </button>
               </div>
             </div>
           ))}
