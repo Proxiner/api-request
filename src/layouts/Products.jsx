@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Products.css";
 
-import { MdOutlineAdd } from "react-icons/md";
-import { FiMinus } from "react-icons/fi";
-
 function Products() {
   const [products, setProducts] = useState([]);
   const [sorted, setSorted] = useState(false);
 
   useEffect(() => {
-    fetch("https://api.escuelajs.co/api/v1/products?offset=3&limit=12")
+    fetch("https://api.escuelajs.co/api/v1/products?offset=3&limit=15")
       .then((response) => response.json())
       .then((output) => setProducts(output));
   }, []);
